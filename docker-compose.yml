@@ -11,7 +11,7 @@ services:
       - "127.0.0.1:53:53/udp"            # DNS config (only required for Pro)
       - "127.0.0.1:443:443"              # LocalStack HTTPS Gateway (only required for Pro)
     environment:
-      - DEBUG=${DEBUG-}
+      - DEBUG=1
       - PERSISTENCE=${PERSISTENCE-}
       - LAMBDA_EXECUTOR=${LAMBDA_EXECUTOR-}
       - LOCALSTACK_API_KEY=${LOCALSTACK_API_KEY-}  # only required for Pro
@@ -44,3 +44,14 @@ services:
     depends_on:
         - localstack
         - terraform
+
+  consumer:
+    build: 
+      context: ./consumer
+      dockerfile: Dockerfile
+    ports:
+        - "8000:8000"
+    environment:
+      - mode=development
+    depends_on:
+        - localstack

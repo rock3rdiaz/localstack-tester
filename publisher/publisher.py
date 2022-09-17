@@ -1,21 +1,24 @@
 import boto3
-import datetime
 
-client = boto3.client('events')
+client = boto3.client('events', region_name='us-east-1',
+                      endpoint_url='http://localstack:4566',
+                      aws_access_key_id='access_key',
+                      aws_secret_access_key='secret_key',
+                      aws_session_token='session_token')
 
 response = client.put_events(
     Entries=[
         {
-            'Time': datetime(2015, 1, 1),
-            'Source': 'string',
+            'Source': 'publisher',
             'Resources': [
                 'string',
             ],
             'DetailType': 'string',
-            'Detail': 'string',
-            'EventBusName': 'string',
+            'Detail': 'string', # aca se define el mensaje en si (como str)
+            'EventBusName': 'arn:aws:events:us-east-1:000000000000:event-bus/my-bus',
             'TraceHeader': 'string'
         },
-    ],
-    EndpointId='string'
+    ]
 )
+
+print(f'----- {response}')
